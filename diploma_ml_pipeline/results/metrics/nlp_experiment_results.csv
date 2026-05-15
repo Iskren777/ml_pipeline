@@ -1,0 +1,13 @@
+﻿Ранк,Модел,Етап / Трансформация,Точност (Accuracy),F1-Score,Доп. настройки (TF-IDF/Модел)
+1,LogisticRegression,"СЛЕД (Email->Токен, Числа->Токен)",0.9888,0.9753,"Модел: [C=10.0, class_weight=Без] | TF-IDF: [max_df=0.95, min_df=2, sublinear_tf=True]"
+2,LogisticRegression,СЛЕД (Числа->Токен),0.9888,0.9753,"Модел: [C=10.0, class_weight=Без] | TF-IDF: [max_df=0.95, min_df=2, sublinear_tf=True]"
+3,LogisticRegression,СЛЕД (Числа->Токен),0.9883,0.9742,"Модел: [C=5.0, class_weight=Без] | TF-IDF: [max_df=0.95, min_df=2, sublinear_tf=True]"
+4,LogisticRegression,"СЛЕД (Email->Токен, Числа->Токен)",0.9881,0.9737,"Модел: [C=5.0, class_weight=Без] | TF-IDF: [max_df=0.95, min_df=2, sublinear_tf=True]"
+5,LogisticRegression,"СЛЕД (URL->Токен, Числа->Токен)",0.9877,0.9728,"Модел: [C=10.0, class_weight=Без] | TF-IDF: [max_df=0.95, min_df=2, sublinear_tf=True]"
+6,LogisticRegression,"СЛЕД (Email->Токен, Числа->Токен)",0.9872,0.9725,"Модел: [C=10.0, class_weight=balanced] | TF-IDF: [max_df=0.95, min_df=2, sublinear_tf=True]"
+7,LogisticRegression,"СЛЕД (URL->Токен, Email->Токен, Числа->Токен)",0.9872,0.9717,"Модел: [C=10.0, class_weight=Без] | TF-IDF: [max_df=0.95, min_df=2, sublinear_tf=True]"
+8,LogisticRegression,СЛЕД (Числа->Токен),0.987,0.9721,"Модел: [C=10.0, class_weight=balanced] | TF-IDF: [max_df=0.95, min_df=2, sublinear_tf=True]"
+9,LogisticRegression,"СЛЕД (URL->Токен, Email->Токен, Числа->Токен)",0.9868,0.9706,"Модел: [C=5.0, class_weight=Без] | TF-IDF: [max_df=0.95, min_df=2, sublinear_tf=True]"
+10,LogisticRegression,"СЛЕД (Числа->Токен, Без пунктуация)",0.9865,0.9703,"Модел: [C=10.0, class_weight=Без] | TF-IDF: [max_df=0.95, min_df=2, sublinear_tf=True]"
+11,RandomForestClassifier,АБСОЛЮТЕН БАЗОВ МОДЕЛ (Default),0.9773,0.9479,"Модел: [n_estimators=50] | TF-IDF: [max_df=1.0, min_df=1]"
+12,LogisticRegression,АБСОЛЮТЕН БАЗОВ МОДЕЛ (Default),0.9693,0.9269,"Модел: [C=1.0, class_weight=Без] | TF-IDF: [max_df=1.0, min_df=1, sublinear_tf=False]"

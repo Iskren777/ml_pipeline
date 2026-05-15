@@ -1,0 +1,16 @@
+Модел,Мащабиране (Scaler),Хиперпараметри,Точност (CV Mean),Точност (CV Std),F1-Score (CV Mean),Ранк
+LogisticRegression,StandardScaler,"{'model': LogisticRegression(), 'model__C': 1.0, 'preprocessor__num__scaler': StandardScaler()}",0.8495467353307375,0.005646678743680121,0.7794578992211475,1
+LogisticRegression,StandardScaler,"{'model': LogisticRegression(), 'model__C': 0.1, 'preprocessor__num__scaler': StandardScaler()}",0.8493932065755084,0.005163380488679797,0.7783672813145882,2
+LogisticRegression,MinMaxScaler,"{'model': LogisticRegression(), 'model__C': 10.0, 'preprocessor__num__scaler': MinMaxScaler()}",0.8493163869266576,0.005504894767373075,0.7793182864202571,3
+LogisticRegression,StandardScaler,"{'model': LogisticRegression(), 'model__C': 10.0, 'preprocessor__num__scaler': StandardScaler()}",0.849162887649421,0.0051780773931498995,0.779235334912425,4
+LogisticRegression,MinMaxScaler,"{'model': LogisticRegression(), 'model__C': 1.0, 'preprocessor__num__scaler': MinMaxScaler()}",0.8465522797726803,0.005064642929520875,0.7738933031437936,5
+RandomForestClassifier,None,"{'model': RandomForestClassifier(random_state=42), 'model__n_estimators': 100, 'preprocessor__num__scaler': 'passthrough'}",0.8435195544106632,0.003194862194875114,0.7758717420721517,6
+RandomForestClassifier,StandardScaler,"{'model': RandomForestClassifier(random_state=42), 'model__n_estimators': 100, 'preprocessor__num__scaler': StandardScaler()}",0.8434811593252342,0.002628646243392115,0.7759423127529214,7
+RandomForestClassifier,MinMaxScaler,"{'model': RandomForestClassifier(random_state=42), 'model__n_estimators': 100, 'preprocessor__num__scaler': MinMaxScaler()}",0.8432892207455795,0.0032314661394991485,0.7755663190498214,8
+RandomForestClassifier,StandardScaler,"{'model': RandomForestClassifier(random_state=42), 'model__n_estimators': 50, 'preprocessor__num__scaler': StandardScaler()}",0.8431356404038632,0.003577989607635057,0.7754321349183249,9
+RandomForestClassifier,None,"{'model': RandomForestClassifier(random_state=42), 'model__n_estimators': 50, 'preprocessor__num__scaler': 'passthrough'}",0.8430588649720014,0.003851897196093824,0.7752428154014462,10
+RandomForestClassifier,MinMaxScaler,"{'model': RandomForestClassifier(random_state=42), 'model__n_estimators': 50, 'preprocessor__num__scaler': MinMaxScaler()}",0.8427517337665617,0.003826802815925364,0.7746880678149503,11
+LogisticRegression,None,"{'model': LogisticRegression(), 'model__C': 1.0, 'preprocessor__num__scaler': 'passthrough'}",0.8403329318185084,0.006014793016072802,0.7634524502273894,12
+LogisticRegression,None,"{'model': LogisticRegression(), 'model__C': 0.1, 'preprocessor__num__scaler': 'passthrough'}",0.8401025834144284,0.007588500540720142,0.7629344759654433,13
+LogisticRegression,None,"{'model': LogisticRegression(), 'model__C': 10.0, 'preprocessor__num__scaler': 'passthrough'}",0.839411634005665,0.0030360265902839873,0.7578000422218837,14
+LogisticRegression,MinMaxScaler,"{'model': LogisticRegression(), 'model__C': 0.1, 'preprocessor__num__scaler': MinMaxScaler()}",0.8375689352070037,0.005638133598148147,0.757603343218531,15

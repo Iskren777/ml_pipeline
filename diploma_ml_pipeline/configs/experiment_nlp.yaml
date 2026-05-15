@@ -1,0 +1,47 @@
+# configs/experiment_nlp.yaml
+
+experiment_name: "nlp_spam_optimization"
+random_state: 42
+
+models:
+  # =========================================================
+  # 1. ИСТИНСКИ БАЗОВ МОДЕЛ (Out-of-the-box)
+  # Напълно суров текст и настройки по подразбиране.
+  # =========================================================
+  - name: "LogisticRegression"
+    params:
+      model__C: [1.0]
+      model__class_weight: [null]
+      vectorizer__max_df: [1.0]           # По подразбиране
+      vectorizer__min_df: [1]             # По подразбиране
+      vectorizer__sublinear_tf: [false]   # По подразбиране
+      cleaner__replace_urls: [false]
+      cleaner__replace_emails: [false]
+      cleaner__replace_numbers: [false]
+      cleaner__remove_punctuation: [false]
+
+  # =========================================================
+  # 2. ОПТИМИЗИРАН PIPELINE (Smart Cleaning + TF-IDF Tuning)
+  # =========================================================
+  - name: "LogisticRegression"
+    params:
+      model__C: [5.0, 10.0]
+      model__class_weight: ['balanced', null]
+      vectorizer__max_df: [0.95]
+      vectorizer__min_df: [2]
+      vectorizer__sublinear_tf: [true]
+      
+      # Тестваме различните комбинации за чистене
+      cleaner__replace_urls: [true, false]
+      cleaner__replace_emails: [true, false]
+      cleaner__replace_numbers: [true, false]
+      cleaner__remove_punctuation: [true, false]
+      
+  # Можем да оставим и Random Forest за сравнение
+  - name: "RandomForest"
+    params:
+      model__n_estimators: [50]
+      vectorizer__max_df: [1.0]
+      vectorizer__min_df: [1]
+      cleaner__replace_numbers: [false]
+      cleaner__remove_punctuation: [false]

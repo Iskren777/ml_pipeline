@@ -1,0 +1,33 @@
+# configs/experiment_1.yaml
+
+experiment_name: "auto_pipeline_v1"
+random_state: 42
+
+data:
+  numeric_features: ["age", "education-num", "capital-gain", "capital-loss", "hours-per-week"]
+  categorical_features: ["workclass", "education", "marital-status", "occupation", "relationship", "race", "sex", "native-country"]
+
+transformations:
+  scalers_to_test:
+    - "StandardScaler"
+    - "MinMaxScaler"
+    - "RobustScaler"
+    - "None"
+
+models:
+  - name: "LogisticRegression"
+    params:
+      model__C: [1.0, 10.0]
+      # Оставяме го на 100 итерации (по подразбиране). 
+      # Без мащабиране ще даде грешка за сходимост, СЪС мащабиране ще работи перфектно!
+      model__max_iter: [100] 
+  
+  - name: "RandomForest"
+    params:
+      model__n_estimators: [50]
+      
+  # НОВО: Този модел ще покаже ОГРОМНА разлика преди и след мащабиране
+  - name: "KNN"
+    params:
+      model__n_neighbors: [5, 10]
+      model__weights: ['uniform', 'distance']
