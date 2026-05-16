@@ -32,7 +32,7 @@ def run_ml_pipeline():
     
     print("\n[Фаза 1] Подготовка и извличане на данните...")
     df = download_and_load_adult_data()
-    df = df.sample(n=10000, random_state=42).reset_index(drop=True)
+    df = df.sample(n=22000, random_state=42).reset_index(drop=True)
     num_features, cat_features = get_feature_lists()
     config['data'] = {'numeric_features': num_features, 'categorical_features': cat_features}
     
