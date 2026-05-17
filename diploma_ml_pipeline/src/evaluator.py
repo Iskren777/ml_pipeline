@@ -5,6 +5,19 @@ import pandas as pd
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import classification_report, accuracy_score, f1_score
 
+# ==========================================
+# ДИНАМИЧНИ ПЪТИЩА
+# ==========================================
+# 1. Намираме папката 'src'
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# 2. Връщаме се една директория назад към главната папка
+BASE_DIR = os.path.dirname(CURRENT_DIR)
+
+# 3. Дефинираме главната папка за резултатите (метрики)
+DEFAULT_METRICS_DIR = os.path.join(BASE_DIR, "results", "metrics")
+
+
 def clean_cv_results(cv_results: dict) -> pd.DataFrame:
     """
     Специфично почистване на резултатите за ML (Таблични данни).
@@ -167,13 +180,18 @@ def clean_nlp_cv_results(cv_results: dict) -> pd.DataFrame:
     return final_df
 
 
-def run_evaluation(pipeline, param_grid, X_train, y_train, X_test, y_test, output_csv="C:\\Users\\kottk\\Desktop\\Много важно\\diploma_ml_pipeline\\results\\metrics\\nlp_experiment_results.csv", is_nlp=False):
+def run_evaluation(pipeline, param_grid, X_train, y_train, X_test, y_test, output_csv=None, is_nlp=False):
     """
     Стартира крос-валидация (GridSearchCV), оценява най-добрия модел 
     върху тестовия сет и експортира резултатите в красив CSV формат.
     
     Параметърът is_nlp определя коя функция за почистване на CSV да се ползва.
     """
+
+    if output_csv is None:
+        filename = "nlp_experiment_results.csv" if is_nlp else "ml_experiment_results.csv"
+        output_csv = os.path.join(DEFAULT_METRICS_DIR, filename)
+
     print("🚀 Стартиране на експериментите с GridSearchCV...")
     
     # Използваме няколко метрики едновременно: Accuracy и F1-Macro

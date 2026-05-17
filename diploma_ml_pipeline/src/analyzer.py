@@ -6,7 +6,16 @@ import matplotlib.pyplot as plt
 import os
 import numpy as np
 
-def plot_scaling_impact(csv_path: str, output_dir: str = "C:\\Users\\kottk\\Desktop\\Много важно\\diploma_ml_pipeline\\results\\figures"):
+# 1. Намираме директорията, в която се намира analyzer.py (т.е. папката 'src')
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# 2. Връщаме се една директория назад, за да стигнем до главната директория (diploma_ml_pipeline)
+BASE_DIR = os.path.dirname(CURRENT_DIR)
+
+# 3. Дефинираме пътя до папката за запазване на графиките динамично
+DEFAULT_OUTPUT_DIR = os.path.join(BASE_DIR, "results", "figures")
+
+def plot_scaling_impact(csv_path: str, output_dir: str = DEFAULT_OUTPUT_DIR):
     """
     Генерира висококачествена, академична графика, показваща влиянието на мащабирането.
     Динамично мащабира Y-оста и поставя точните стойности върху колонките.

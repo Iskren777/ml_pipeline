@@ -6,6 +6,18 @@ import urllib.request
 import zipfile
 
 # ==========================================
+# ДИНАМИЧНИ ПЪТИЩА (УНИВЕРСАЛНИ)
+# ==========================================
+# 1. Намираме папката 'src', където се намира текущия файл
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# 2. Връщаме се една директория назад, към главната папка на проекта
+BASE_DIR = os.path.dirname(CURRENT_DIR)
+
+# 3. Дефинираме главната папка за сурови данни
+RAW_DATA_DIR = os.path.join(BASE_DIR, "data", "raw")
+
+# ==========================================
 # 1. Зареждане на Таблични данни (Adult Census)
 # ==========================================
 def download_and_load_adult_data():
@@ -14,7 +26,7 @@ def download_and_load_adult_data():
     и го превръща в Pandas DataFrame.
     """
     url = "https://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.data"
-    data_dir = "data/raw"
+    data_dir = RAW_DATA_DIR
     file_path = os.path.join(data_dir, "adult.csv")
     
     if not os.path.exists(data_dir):
@@ -55,7 +67,7 @@ def download_and_load_sms_data():
     разархивира го и го подготвя като Pandas DataFrame.
     """
     url = "https://archive.ics.uci.edu/ml/machine-learning-databases/00228/smsspamcollection.zip"
-    data_dir = "C:\\Users\\kottk\\Desktop\\Много важно\\diploma_ml_pipeline\\data\\raw"
+    data_dir = RAW_DATA_DIR
     zip_path = os.path.join(data_dir, "smsspamcollection.zip")
     extract_dir = os.path.join(data_dir, "sms_spam")
     

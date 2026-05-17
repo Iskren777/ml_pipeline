@@ -1,6 +1,7 @@
 # src/pipeline_builder.py
 
 import yaml
+import os
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.pipeline import Pipeline
@@ -131,7 +132,7 @@ def build_nlp_pipeline_and_grid(config: dict):
 # ==========================================
 if __name__ == "__main__":
     # Симулираме четене на конфигурацията
-    config = load_config("C:\\Users\\kottk\\Desktop\\Много важно\\diploma_ml_pipeline\\configs\\experiment_1.yaml")
+    config = load_config("configs/experiment_1.yaml")
     
     pipeline, grid = build_dynamic_pipeline_and_grid(config)
     

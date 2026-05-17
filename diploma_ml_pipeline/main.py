@@ -1,5 +1,5 @@
 # main.py
-
+import os
 import pandas as pd
 import warnings
 from sklearn.model_selection import train_test_split
@@ -18,6 +18,8 @@ except ImportError:
 warnings.filterwarnings("ignore", category=ConvergenceWarning)
 warnings.filterwarnings("ignore", category=UserWarning)
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 def run_ml_pipeline():
     """
     Стартира експериментите за таблични данни (Adult Census).
@@ -28,11 +30,12 @@ def run_ml_pipeline():
     print("ЦЕЛ: Анализ на влиянието на трансформациите върху моделната селекция")
     print("="*65)
 
-    config = load_config("C:\\Users\\kottk\\Desktop\\Много важно\\diploma_ml_pipeline\\configs\\experiment_1.yaml")
+    config_path = os.path.join(BASE_DIR, "configs", "experiment_1.yaml")
+    config = load_config(config_path)
     
     print("\n[Фаза 1] Подготовка и извличане на данните...")
     df = download_and_load_adult_data()
-    df = df.sample(n=22000, random_state=42).reset_index(drop=True)
+    df = df.sample(n=2000, random_state=42).reset_index(drop=True)
     num_features, cat_features = get_feature_lists()
     config['data'] = {'numeric_features': num_features, 'categorical_features': cat_features}
     
@@ -50,7 +53,7 @@ def run_ml_pipeline():
     pipeline, param_grid = build_dynamic_pipeline_and_grid(config)
     
     print("\n[Фаза 3] Автоматизирана моделна селекция (Grid Search Cross-Validation)...")
-    csv_results_path = "C:\\Users\\kottk\\Desktop\\Много важно\\diploma_ml_pipeline\\results\\metrics\\ml_experiment_results.csv"
+    csv_results_path = os.path.join(BASE_DIR, "results", "metrics", "ml_experiment_results.csv")
     best_pipeline, results_df = run_evaluation(
         pipeline, param_grid, X_train, y_train, X_test, y_test, output_csv=csv_results_path, is_nlp=False
     )
@@ -73,7 +76,8 @@ def run_nlp_pipeline():
     print("ЦЕЛ: Анализ на влиянието на текстовите трансформации (NLP) върху моделите")
     print("="*65)
 
-    config = load_config("C:\\Users\\kottk\\Desktop\\Много важно\\diploma_ml_pipeline\\configs\\experiment_nlp.yaml")
+    config_path = os.path.join(BASE_DIR, "configs", "experiment_nlp.yaml")
+    config = load_config(config_path)
     
     print("\n[Фаза 1] Подготовка на текстовите данни...")
     df = download_and_load_sms_data()
@@ -91,7 +95,7 @@ def run_nlp_pipeline():
     pipeline, param_grid = build_nlp_pipeline_and_grid(config)
     
     print("\n[Фаза 3] Моделна селекция и оптимизация на хиперпараметрите...")
-    csv_results_path = "C:\\Users\\kottk\\Desktop\\Много важно\\diploma_ml_pipeline\\results\\metrics\\nlp_experiment_results.csv"
+    csv_results_path = os.path.join(BASE_DIR, "results", "metrics", "nlp_experiment_results.csv")
     best_pipeline, results_df = run_evaluation(
         pipeline, param_grid, X_train, y_train, X_test, y_test, output_csv=csv_results_path, is_nlp=True
     )

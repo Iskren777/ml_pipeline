@@ -5,7 +5,15 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import os
 
-def plot_tfidf_feature_importance(best_pipeline, top_n=15, output_dir="C:\\Users\\kottk\\Desktop\\Много важно\\diploma_ml_pipeline\\results\\figures"):
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# 2. Връщаме се една директория назад към главната папка (diploma_ml_pipeline)
+BASE_DIR = os.path.dirname(CURRENT_DIR)
+
+# 3. Дефинираме главната папка за запазване на графиките (по подразбиране)
+DEFAULT_FIGURES_DIR = os.path.join(BASE_DIR, "results", "figures")
+
+def plot_tfidf_feature_importance(best_pipeline, top_n=15, output_dir=DEFAULT_FIGURES_DIR):
     """
     Извлича най-важните думи от TfidfVectorizer и LogisticRegression
     и генерира графика (Feature Importance).
