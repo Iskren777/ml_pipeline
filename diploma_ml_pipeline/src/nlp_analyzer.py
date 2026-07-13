@@ -7,10 +7,8 @@ import os
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 
-# 2. Връщаме се една директория назад към главната папка (diploma_ml_pipeline)
 BASE_DIR = os.path.dirname(CURRENT_DIR)
 
-# 3. Дефинираме главната папка за запазване на графиките (по подразбиране)
 DEFAULT_FIGURES_DIR = os.path.join(BASE_DIR, "results", "figures")
 
 def plot_tfidf_feature_importance(best_pipeline, top_n=15, output_dir=DEFAULT_FIGURES_DIR):
@@ -54,7 +52,7 @@ def plot_tfidf_feature_importance(best_pipeline, top_n=15, output_dir=DEFAULT_FI
     plt.figure(figsize=(12, 8))
     sns.set_theme(style="whitegrid")
     
-    # Използваме червено за Спам и зелено за нормални съобщения
+    # Използва червено за Спам и зелено за нормални съобщения
     custom_palette = {'Спам индикатор': '#d62728', 'Нормално съобщение': '#2ca02c'}
     
     sns.barplot(
