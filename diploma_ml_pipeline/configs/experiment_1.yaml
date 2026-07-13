@@ -18,15 +18,12 @@ models:
   - name: "LogisticRegression"
     params:
       model__C: [1.0, 10.0]
-      # Оставяме го на 100 итерации (по подразбиране). 
-      # Без мащабиране ще даде грешка за сходимост, СЪС мащабиране ще работи перфектно!
       model__max_iter: [100] 
   
   - name: "RandomForest"
     params:
       model__n_estimators: [50]
       
-  # НОВО: Този модел ще покаже ОГРОМНА разлика преди и след мащабиране
   - name: "KNN"
     params:
       model__n_neighbors: [5, 10]
