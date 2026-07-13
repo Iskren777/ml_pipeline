@@ -16,20 +16,20 @@ from src.text_cleaner import TextCleaner # Вашият custom transformer
 
 # ---------------------------------------------------------
 # Речници за картографиране (Mapping): 
-# Превеждат текст от YAML към реални scikit-learn класове
+# Превежда текст от YAML към реални scikit-learn класове
 # ---------------------------------------------------------
 SCALER_MAP = {
     "StandardScaler": StandardScaler(),
     "MinMaxScaler": MinMaxScaler(),
-    "RobustScaler": RobustScaler(),             # НОВО: Игнорира екстремни стойности (outliers)
-    "PowerTransformer": PowerTransformer(),     # НОВО: Прави данните симетрични (Gaussian-like)
+    "RobustScaler": RobustScaler(),     
+    "PowerTransformer": PowerTransformer(),
     "None": "passthrough"
 }
 
 MODEL_MAP = {
-    "LogisticRegression": LogisticRegression(max_iter=100), # Връщаме на 100 итерации, за да видим кога се проваля без скалиране
+    "LogisticRegression": LogisticRegression(max_iter=100), # Връща на 100 итерации, за да видим кога се проваля без скалиране
     "RandomForest": RandomForestClassifier(random_state=42),
-    "KNN": KNeighborsClassifier() # НОВО: Модел, базиран на разстояния
+    "KNN": KNeighborsClassifier()
 }
 
 def load_config(config_path: str) -> dict:
@@ -47,8 +47,8 @@ def build_dynamic_pipeline_and_grid(config: dict):
     num_features = config['data']['numeric_features']
     cat_features = config['data']['categorical_features']
 
-    # Дефинираме стъпките за числовите данни. 
-    # Слагаме 'passthrough' като временен заместител (placeholder) за скалирането.
+    # Дефинира стъпките за числовите данни. 
+    # Слага 'passthrough' като временен заместител (placeholder) за скалирането.
     numeric_transformer = Pipeline(steps=[
         ('imputer', SimpleImputer(strategy='median')),
         ('scaler', 'passthrough') 
@@ -65,7 +65,7 @@ def build_dynamic_pipeline_and_grid(config: dict):
     ])
 
     # 2. Създаване на Базовия Pipeline
-    # Слагаме LogisticRegression като placeholder. GridSearchCV ще го подменя.
+    # Слага LogisticRegression като placeholder. GridSearchCV ще го подменя.
     base_pipeline = Pipeline(steps=[
         ('preprocessor', preprocessor),
         ('model', LogisticRegression()) 
@@ -77,21 +77,21 @@ def build_dynamic_pipeline_and_grid(config: dict):
     
     param_grid = []
     
-    # Итерираме през всеки модел, дефиниран в YAML файла
+    # Итерира през всеки модел, дефиниран в YAML файла
     for model_info in config['models']:
         model_name = model_info['name']
         model_instance = MODEL_MAP[model_name]
         
-        # Създаваме речник с настройки за конкретния модел
+        # Създава речник с настройки за конкретния модел
         grid_params = {
             'model': [model_instance],
             'preprocessor__num__scaler': actual_scalers
         }
         
-        # Добавяме специфичните хиперпараметри за модела
+        # Добавя специфичните хиперпараметри за модела
         if 'params' in model_info:
             for param_name, param_values in model_info['params'].items():
-                # Проверяваме дали параметърът вече има префикс. Ако няма, го добавяме.
+                # Проверява дали параметърът вече има префикс. Ако няма, го добавяме.
                 if not param_name.startswith('model__'):
                     grid_key = f"model__{param_name}"
                 else:
@@ -108,16 +108,16 @@ def build_nlp_pipeline_and_grid(config: dict):
     """
     # 1. Базов Pipeline за текст
     base_pipeline = Pipeline([
-        ('cleaner', TextCleaner(to_lower=True)), # Стъпка 1: Нашето почистване
+        ('cleaner', TextCleaner(to_lower=True)), # Стъпка 1: Моето почистване
         ('vectorizer', TfidfVectorizer(max_features=3000)), # Стъпка 2: Думи към числа
-        ('model', LogisticRegression()) # Стъпка 3: Модел (ще се подменя)
+        ('model', LogisticRegression()) # Стъпка 3: Модел
     ])
     
     # 2. Изграждане на решетката с параметри (Param Grid)
     param_grid = []
     for model_info in config['models']:
         model_name = model_info['name']
-        model_instance = MODEL_MAP[model_name] # Вземаме модела от речника
+        model_instance = MODEL_MAP[model_name] # Взема модела от речника
         
         grid_params = {'model': [model_instance]}
         if 'params' in model_info:
@@ -131,7 +131,7 @@ def build_nlp_pipeline_and_grid(config: dict):
 # Тест на системата
 # ==========================================
 if __name__ == "__main__":
-    # Симулираме четене на конфигурацията
+    # Симулира четене на конфигурацията
     config = load_config("configs/experiment_1.yaml")
     
     pipeline, grid = build_dynamic_pipeline_and_grid(config)
