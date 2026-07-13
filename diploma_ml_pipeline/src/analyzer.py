@@ -6,13 +6,13 @@ import matplotlib.pyplot as plt
 import os
 import numpy as np
 
-# 1. Намираме директорията, в която се намира analyzer.py (т.е. папката 'src')
+
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 
-# 2. Връщаме се една директория назад, за да стигнем до главната директория (diploma_ml_pipeline)
+
 BASE_DIR = os.path.dirname(CURRENT_DIR)
 
-# 3. Дефинираме пътя до папката за запазване на графиките динамично
+
 DEFAULT_OUTPUT_DIR = os.path.join(BASE_DIR, "results", "figures")
 
 def plot_scaling_impact(csv_path: str, output_dir: str = DEFAULT_OUTPUT_DIR):
@@ -26,12 +26,11 @@ def plot_scaling_impact(csv_path: str, output_dir: str = DEFAULT_OUTPUT_DIR):
     df = pd.read_csv(csv_path)
     os.makedirs(output_dir, exist_ok=True)
     
-    # 2. Настройка на стила (По-научен и изчистен вид)
+    # 2. Настройка на стила
     sns.set_theme(style="whitegrid", context="paper", font_scale=1.2)
     plt.figure(figsize=(14, 8))
     
     # 3. Изграждане на Bar Chart
-    # Използваме 'Set2' или 'muted' за по-професионални цветове и слагаме черен контур (edgecolor)
     ax = sns.barplot(
         data=df, 
         x='Модел', 
@@ -46,22 +45,17 @@ def plot_scaling_impact(csv_path: str, output_dir: str = DEFAULT_OUTPUT_DIR):
     plt.xlabel('Машинен алгоритъм', fontsize=14, fontweight='bold', labelpad=15)
     plt.ylabel('Точност (Accuracy)', fontsize=14, fontweight='bold', labelpad=15)
     
-    # ==========================================================
-    # ТРИК 1: ДИНАМИЧНА Y-ОС ЗА МАКСИМАЛЕН КОНТРАСТ
-    # ==========================================================
+
     min_acc = df['Точност (Accuracy)'].min()
     max_acc = df['Точност (Accuracy)'].max()
     
-    # Настройваме графиката да показва само релевантната част (напр. от 0.70 до 0.88)
-    # Това ще направи разликите очевидни!
+    # Настройвам графиката да показва само релевантната част (напр. от 0.70 до 0.88)
     plt.ylim(max(0, min_acc - 0.04), min(1.0, max_acc + 0.04))
     
-    # ==========================================================
-    # ТРИК 2: ИЗПИСВАНЕ НА СТОЙНОСТИТЕ ВЪРХУ КОЛОНКИТЕ
-    # ==========================================================
+    # ИЗПИСВАНЕ НА СТОЙНОСТИТЕ ВЪРХУ КОЛОНКИТЕ
     for p in ax.patches:
         height = p.get_height()
-        # Проверка дали височината е валидно число (понякога има празни места)
+        # Проверка дали височината е валидно число
         if not np.isnan(height) and height > 0:
             ax.annotate(f'{height:.4f}',
                         (p.get_x() + p.get_width() / 2., height),
@@ -70,7 +64,7 @@ def plot_scaling_impact(csv_path: str, output_dir: str = DEFAULT_OUTPUT_DIR):
                         xytext=(0, 6), textcoords='offset points', 
                         rotation=45) # Завъртаме текста леко, за да не се застъпва
     
-    # 4. Оформление на легендата (Изнасяме я извън графиката, за да не скрива данните)
+    # 4. Оформление на легендата
     plt.legend(
         title='Етап / Трансформация', 
         title_fontsize='13', 
@@ -83,7 +77,7 @@ def plot_scaling_impact(csv_path: str, output_dir: str = DEFAULT_OUTPUT_DIR):
     
     plt.tight_layout()
     
-    # 5. Запазване на файла с високо качество (dpi=300 е стандарт за печат на дипломни работи)
+    # 5. Запазване на файла с високо качество
     output_file = os.path.join(output_dir, 'scaling_impact_barplot_HighRes.png')
     plt.savefig(output_file, dpi=300, bbox_inches='tight')
     plt.close()
