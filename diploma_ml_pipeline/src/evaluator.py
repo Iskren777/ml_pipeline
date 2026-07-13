@@ -5,16 +5,11 @@ import pandas as pd
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import classification_report, accuracy_score, f1_score
 
-# ==========================================
 # ДИНАМИЧНИ ПЪТИЩА
-# ==========================================
-# 1. Намираме папката 'src'
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 
-# 2. Връщаме се една директория назад към главната папка
 BASE_DIR = os.path.dirname(CURRENT_DIR)
 
-# 3. Дефинираме главната папка за резултатите (метрики)
 DEFAULT_METRICS_DIR = os.path.join(BASE_DIR, "results", "metrics")
 
 
@@ -43,7 +38,7 @@ def clean_cv_results(cv_results: dict) -> pd.DataFrame:
     df_results['Точност (Accuracy)'] = df_results['mean_test_accuracy'].round(4)
     df_results['F1-Score'] = df_results['mean_test_f1_macro'].round(4)
     
-    # 2. Кристално четими допълнителни настройки
+    # 2. Четими допълнителни настройки
     def get_clean_params(params_dict):
         model_params = []
         for k, v in params_dict.items():
@@ -64,23 +59,22 @@ def clean_cv_results(cv_results: dict) -> pd.DataFrame:
     cols = ['Модел', 'Етап / Трансформация', 'Точност (Accuracy)', 'F1-Score', 'Доп. настройки (Модел)']
     df_clean = df_results[cols].copy()
     
-    # ========================================================
-    # 3. РАЗДЕЛЯНЕ НА ПРЕДИ И СЛЕД + ИЗВЛИЧАНЕ НА ТОП 10
-    # ========================================================
-    
-    # Отделяме резултатите ПРЕДИ мащабиране
+
+    # РАЗДЕЛЯНЕ НА ПРЕДИ И СЛЕД + ИЗВЛИЧАНЕ НА ТОП 10
+
+    # Отделя резултатите ПРЕДИ мащабиране
     baseline_df = df_clean[df_clean['Етап / Трансформация'] == 'ПРЕДИ (Без мащабиране)']
     best_baseline = baseline_df.sort_values('Точност (Accuracy)', ascending=False).groupby('Модел').head(1)
     
-    # Отделяме резултатите СЛЕД мащабиране
+    # Отделя резултатите СЛЕД мащабиране
     after_df = df_clean[df_clean['Етап / Трансформация'] != 'ПРЕДИ (Без мащабиране)']
     top_10_after = after_df.sort_values(['Точност (Accuracy)', 'F1-Score'], ascending=[False, False]).head(10)
     
-    # Обединяваме и сортираме наново, за да се подреди правилният ранк
+    # Обединява и сортира наново, за да се подреди правилният ранк
     final_df = pd.concat([best_baseline, top_10_after])
     final_df = final_df.sort_values(['Точност (Accuracy)', 'F1-Score'], ascending=[False, False]).reset_index(drop=True)
     
-    # Добавяме ранкинг от 1 надолу
+    # Добавя ранкинг от 1 надолу
     final_df.index = final_df.index + 1
     final_df.index.name = 'Ранк'
     final_df = final_df.reset_index()
@@ -107,7 +101,7 @@ def clean_nlp_cv_results(cv_results: dict) -> pd.DataFrame:
         if p.get('cleaner__remove_punctuation', False): active_methods.append('Без пунктуация')
         
         if not active_methods:
-            # Проверяваме дали това е Истинският Базов Модел (без TF-IDF оптимизации)
+            # Проверява дали това е Истинският Базов Модел
             is_default_tfidf = (p.get('vectorizer__min_df', 1) == 1 and 
                                 p.get('vectorizer__sublinear_tf', False) == False)
             if is_default_tfidf:
@@ -121,9 +115,8 @@ def clean_nlp_cv_results(cv_results: dict) -> pd.DataFrame:
     df_results['Точност (Accuracy)'] = df_results['mean_test_accuracy'].round(4)
     df_results['F1-Score'] = df_results['mean_test_f1_macro'].round(4)
     
-    # ========================================================
-    # ПОДОБРЕНИЕ 1: Кристално четими допълнителни настройки
-    # ========================================================
+
+    # Четими допълнителни настройки
     def get_clean_params(params_dict):
         model_params = []
         tfidf_params = []
@@ -132,7 +125,7 @@ def clean_nlp_cv_results(cv_results: dict) -> pd.DataFrame:
             if k == 'model' or 'cleaner__' in k:
                 continue
             
-            # Правим стойностите по-четими (пр. None става 'Без')
+            # Прави стойностите по-четими
             val_str = "Без" if v is None else str(v)
             
             if 'model__' in k:
@@ -142,7 +135,7 @@ def clean_nlp_cv_results(cv_results: dict) -> pd.DataFrame:
                 key = k.replace('vectorizer__', '')
                 tfidf_params.append(f"{key}={val_str}")
         
-        # Групираме ги красиво
+        # Групира ги красиво
         parts = []
         if model_params:
             parts.append("Модел: [" + ", ".join(model_params) + "]")
@@ -156,23 +149,22 @@ def clean_nlp_cv_results(cv_results: dict) -> pd.DataFrame:
     cols = ['Модел', 'Етап / Трансформация', 'Точност (Accuracy)', 'F1-Score', 'Доп. настройки (TF-IDF/Модел)']
     df_clean = df_results[cols].copy()
     
-    # ========================================================
-    # 2. РАЗДЕЛЯНЕ НА ПРЕДИ И СЛЕД + ИЗВЛИЧАНЕ НА ТОП 10
-    # ========================================================
+  
+    # РАЗДЕЛЯНЕ НА ПРЕДИ И СЛЕД + ИЗВЛИЧАНЕ НА ТОП 10 
     
-    # Отделяме АБСОЛЮТНИЯ БАЗОВ МОДЕЛ
+    # Отделя АБСОЛЮТНИЯ БАЗОВ МОДЕЛ
     baseline_df = df_clean[df_clean['Етап / Трансформация'] == 'АБСОЛЮТЕН БАЗОВ МОДЕЛ (Default)']
     best_baseline = baseline_df.sort_values('Точност (Accuracy)', ascending=False).groupby('Модел').head(1)
     
-    # Отделяме ТОП 10 резултатите СЛЕД интелигентна обработка
+    # Отделя ТОП 10 резултатите СЛЕД интелигентна обработка
     after_df = df_clean[df_clean['Етап / Трансформация'].str.startswith('СЛЕД')]
     top_10_after = after_df.sort_values(['Точност (Accuracy)', 'F1-Score'], ascending=[False, False]).head(10)
     
-    # Обединяваме и сортираме
+    # Обединява и сортираме
     final_df = pd.concat([best_baseline, top_10_after])
     final_df = final_df.sort_values(['Точност (Accuracy)', 'F1-Score'], ascending=[False, False]).reset_index(drop=True)
     
-    # Добавяме ранкинг от 1 надолу
+    # Добавя ранкинг от 1 надолу
     final_df.index = final_df.index + 1
     final_df.index.name = 'Ранк'
     final_df = final_df.reset_index()
@@ -194,7 +186,6 @@ def run_evaluation(pipeline, param_grid, X_train, y_train, X_test, y_test, outpu
 
     print("🚀 Стартиране на експериментите с GridSearchCV...")
     
-    # Използваме няколко метрики едновременно: Accuracy и F1-Macro
     scoring_metrics = ['accuracy', 'f1_macro']
     
     grid_search = GridSearchCV(
@@ -228,13 +219,13 @@ def run_evaluation(pipeline, param_grid, X_train, y_train, X_test, y_test, outpu
     print("\nДетайлен репорт на класификацията:")
     print(classification_report(y_test, y_pred))
     
-    # Извличане и почистване на резултатите (избор спрямо типа проект)
+    # Извличане и почистване на резултатите
     if is_nlp:
         df_clean_results = clean_nlp_cv_results(grid_search.cv_results_)
     else:
         df_clean_results = clean_cv_results(grid_search.cv_results_)
     
-    # Създаване на директория и запазване в CSV (с utf-8-sig за правилна кирилица в Excel)
+    # Създаване на директория и запазване в CSV
     import os
     os.makedirs(os.path.dirname(output_csv), exist_ok=True)
     df_clean_results.to_csv(output_csv, index=False, encoding='utf-8-sig')
