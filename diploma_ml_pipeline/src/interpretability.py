@@ -22,14 +22,14 @@ def explain_best_model(best_pipeline, X_train, output_dir="results/figures/"):
     except Exception:
         feature_names = [f"Feature {i}" for i in range(X_train_transformed.shape[1])]
 
-    # Създаваме DataFrame с трансформираните данни и правилните имена
+    # Създава DataFrame с трансформираните данни и правилните имена
     X_train_df = pd.DataFrame(X_train_transformed, columns=feature_names)
 
     # 4. Инициализация на SHAP Explainer според типа модел
     if type(model).__name__ == "RandomForestClassifier":
         explainer = shap.TreeExplainer(model)
         shap_values = explainer.shap_values(X_train_df)
-        # При класификация с гора, shap_values е лист. Вземаме стойностите за клас 1
+        # При класификация с гора, shap_values е лист. Взема стойностите за клас 1
         if isinstance(shap_values, list):
             shap_values = shap_values[1]
     elif type(model).__name__ == "LogisticRegression":
