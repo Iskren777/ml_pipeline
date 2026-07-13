@@ -5,15 +5,13 @@ import warnings
 from sklearn.model_selection import train_test_split
 from sklearn.exceptions import ConvergenceWarning
 
-# Импортиране на нашите модули
+
 from src.pipeline_builder import load_config, build_dynamic_pipeline_and_grid, build_nlp_pipeline_and_grid
 from src.evaluator import run_evaluation
 from src.analyzer import plot_scaling_impact
 from src.data_loader import download_and_load_adult_data, get_feature_lists, download_and_load_sms_data
-try:
-    from src.nlp_analyzer import plot_tfidf_feature_importance
-except ImportError:
-    pass # В случай че не сте създали nlp_analyzer.py
+from src.nlp_analyzer import plot_tfidf_feature_importance
+
 
 warnings.filterwarnings("ignore", category=ConvergenceWarning)
 warnings.filterwarnings("ignore", category=UserWarning)
