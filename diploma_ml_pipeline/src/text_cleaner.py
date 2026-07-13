@@ -26,11 +26,11 @@ class TextCleaner(BaseEstimator, TransformerMixin):
             if self.to_lower:
                 text = text.lower()
                 
-            # НОВО: Замяна на линкове (http://..., www...) с токен _URL_
+            # Замяна на линкове (http://..., www...) с токен _URL_
             if self.replace_urls:
                 text = re.sub(r'http[s]?://\S+|www\.\S+', ' _URL_ ', text)
                 
-            # НОВО: Замяна на имейли с токен _EMAIL_
+            # Замяна на имейли с токен _EMAIL_
             if self.replace_emails:
                 text = re.sub(r'\S+@\S+', ' _EMAIL_ ', text)
                 
